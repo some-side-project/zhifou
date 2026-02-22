@@ -1,4 +1,4 @@
- const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 
 const accessKey = process.env.QINIU_ACCESS_KEY;
@@ -20,6 +20,7 @@ const formUploader = new qiniu.form_up.FormUploader(config);
 const putExtra = new qiniu.form_up.PutExtra();
 
 const distDir = path.join(__dirname, '..', '.next', 'static');
+const qiniuPrefix = '_next/static';
 
 function getAllFiles(dir, basePath = '') {
   const files = [];
@@ -43,10 +44,11 @@ function getAllFiles(dir, basePath = '') {
 
 function uploadFile(filePath, key) {
   return new Promise((resolve, reject) => {
+    const fullKey = `${qiniuPrefix}/${key}`;
     const putPolicy = new qiniu.rs.PutPolicy({ scope: bucket });
     const uploadToken = putPolicy.uploadToken(mac);
     
-    formUploader.putFile(uploadToken, key, filePath, putExtra, (err, body, info) => {
+    formUploader.putFile(uploadToken, fullKey, filePath, putExtra, (err, body, info) => {
       if (err) {
         reject(err);
       } else if (info.statusCode === 200) {
@@ -60,6 +62,7 @@ function uploadFile(filePath, key) {
 
 async function main() {
   console.log('开始上传静态资源到七牛云...\n');
+  console.log('七牛云路径前缀:', qiniuPrefix);
   
   const files = getAllFiles(distDir);
   console.log(`共 ${files.length} 个文件待上传\n`);
@@ -72,10 +75,10 @@ async function main() {
     try {
       await uploadFile(localPath, key);
       successCount++;
-      console.log(`[${i + 1}/${files.length}] 上传成功: ${key}`);
+      console.log(`[${i + 1}/${files.length}] 上传成功: ${qiniuPrefix}/${key}`);
     } catch (err) {
       failCount++;
-      console.error(`[${i + 1}/${files.length}] 上传失败: ${key}`, err.message);
+      console.error(`[${i + 1}/${files.length}] 上传失败: ${qiniuPrefix}/${key}`, err.message);
     }
   }
   
