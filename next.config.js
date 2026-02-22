@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  assetPrefix: 'https://zhifou.finded.net',
+  assetPrefix: 'https://zhifou-static.finded.net',
   images: {
     loader: 'custom',
     loaderFile: './src/lib/qiniu-image-loader.ts',
