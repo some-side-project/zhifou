@@ -6,11 +6,13 @@ import Footer from '@/components/Footer'
 import Link from 'next/link'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import AIAssistantIcon from '@/components/AIAssistantIcon'
+import { useAuth } from '@/lib/auth-context'
 
 export default function UserProfilePage() {
   const params = useParams()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { isLoggedIn } = useAuth()
   const username = decodeURIComponent(params.username as string)
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const [isTabSticky, setIsTabSticky] = useState(false)
@@ -23,8 +25,6 @@ export default function UserProfilePage() {
   const [aiAssistantTabActive, setAiAssistantTabActive] = useState(false)
   // 控制添加内容模态框的显示
   const [showAddContentModal, setShowAddContentModal] = useState(false)
-  // 登录状态
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   // 留言功能状态
   const [showMessageForm, setShowMessageForm] = useState(false)
   const [messageContent, setMessageContent] = useState('')
@@ -47,31 +47,8 @@ export default function UserProfilePage() {
       if (savedAiTab) {
         setAiAssistantTabActive(savedAiTab === 'true')
       }
-      
-      // 检查登录状态
-      const loggedIn = localStorage.getItem('isLoggedIn') === 'true'
-      setIsLoggedIn(loggedIn)
     }
   }, [username])
-
-  // 监听登录状态变化
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      if (typeof window !== 'undefined') {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true'
-        setIsLoggedIn(loggedIn)
-      }
-    }
-
-    // 监听storage事件，当登录状态发生变化时更新
-    if (typeof window !== 'undefined') {
-      window.addEventListener('storage', checkLoginStatus)
-      
-      return () => {
-        window.removeEventListener('storage', checkLoginStatus)
-      }
-    }
-  }, [])
 
   // 计算知龄（从加入日期到现在的时间差）
   const calculateZhiling = (joinDate: string) => {
@@ -99,20 +76,17 @@ export default function UserProfilePage() {
     return { years, months, days }
   }
   
-  // 根据等级获取等级图标
+  // 根据等级获取等级图标 (王者荣耀风格)
   const getLevelIcon = (level: number) => {
     switch(level) {
-      case 10: return '👑' // 10级：皇冠
-      case 9: return '💎' // 9级：钻石
-      case 8: return '🌟' // 8级：星星
-      case 7: return '⚡' // 7级：闪电
-      case 6: return '🔥' // 6级：火焰
-      case 5: return '💪' // 5级：肌肉
-      case 4: return '📈' // 4级：上升趋势
-      case 3: return '📊' // 3级：图表
-      case 2: return '📝' // 2级：笔记
-      case 1: return '🌱' // 1级：萌芽
-      default: return '🌱'
+      case 7: return '👑' // 7级：王者-皇冠
+      case 6: return '⭐' // 6级：星耀-星星
+      case 5: return '💎' // 5级：钻石-钻石
+      case 4: return '🔷' // 4级：铂金-蓝宝石
+      case 3: return '🥇' // 3级：黄金-金牌
+      case 2: return '🥈' // 2级：白银-银牌
+      case 1: return '🥉' // 1级：青铜-铜牌
+      default: return '🥉'
     }
   }
   
@@ -312,22 +286,19 @@ export default function UserProfilePage() {
       ],
     },
     level: {
-      current: 5,
+      current: 3,
       experience: 650,
       required: 1000,
-      icon: '⭐',
+      icon: '🥇',
     },
     levelBadges: [
-      { level: 1, name: '萌芽创作者', bgGradient: 'from-green-400 to-green-600', textColor: 'text-white', borderColor: 'border-green-500' },
-      { level: 2, name: '初级创作者', bgGradient: 'from-blue-400 to-blue-600', textColor: 'text-white', borderColor: 'border-blue-500' },
-      { level: 3, name: '进阶创作者', bgGradient: 'from-cyan-400 to-cyan-600', textColor: 'text-white', borderColor: 'border-cyan-500' },
-      { level: 4, name: '成长创作者', bgGradient: 'from-teal-400 to-teal-600', textColor: 'text-white', borderColor: 'border-teal-500' },
-      { level: 5, name: '成熟创作者', bgGradient: 'from-indigo-400 to-indigo-600', textColor: 'text-white', borderColor: 'border-indigo-500' },
-      { level: 6, name: '优秀创作者', bgGradient: 'from-orange-400 to-orange-600', textColor: 'text-white', borderColor: 'border-orange-500' },
-      { level: 7, name: '精英创作者', bgGradient: 'from-purple-400 to-purple-600', textColor: 'text-white', borderColor: 'border-purple-500' },
-      { level: 8, name: '大师创作者', bgGradient: 'from-yellow-400 to-yellow-600', textColor: 'text-white', borderColor: 'border-yellow-500' },
-      { level: 9, name: '传奇创作者', bgGradient: 'from-red-400 to-red-600', textColor: 'text-white', borderColor: 'border-red-500' },
-      { level: 10, name: '创世创作者', bgGradient: 'from-amber-300 to-yellow-500', textColor: 'text-white', borderColor: 'border-amber-400' },
+      { level: 1, name: '青铜', bgGradient: 'from-amber-700 to-amber-900', textColor: 'text-white', borderColor: 'border-amber-600' },
+      { level: 2, name: '白银', bgGradient: 'from-gray-300 to-gray-500', textColor: 'text-white', borderColor: 'border-gray-400' },
+      { level: 3, name: '黄金', bgGradient: 'from-yellow-400 to-yellow-600', textColor: 'text-white', borderColor: 'border-yellow-500' },
+      { level: 4, name: '铂金', bgGradient: 'from-purple-400 to-purple-600', textColor: 'text-white', borderColor: 'border-purple-500' },
+      { level: 5, name: '钻石', bgGradient: 'from-cyan-400 to-cyan-600', textColor: 'text-white', borderColor: 'border-cyan-500' },
+      { level: 6, name: '星耀', bgGradient: 'from-violet-500 to-purple-700', textColor: 'text-white', borderColor: 'border-violet-500' },
+      { level: 7, name: '王者', bgGradient: 'from-orange-400 to-red-500', textColor: 'text-white', borderColor: 'border-orange-500' },
     ],
     vip: {
       level: 2,
@@ -651,8 +622,7 @@ export default function UserProfilePage() {
                     {/* 等级信息 */}
                     <div className="flex items-center gap-2 mb-1 text-sm">
                       <span className="w-5 h-5 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 text-xs">🏆</span>
-                      <span className="text-secondary">创作等级：</span>
-                      {(() => {
+                      <span className="text-secondary">创作等级：</span>{(() => {
                         const currentLevel = userData.level.current
                         const badge = userData.levelBadges?.find(b => b.level === currentLevel)
                         if (!badge) return null
@@ -664,10 +634,7 @@ export default function UserProfilePage() {
                             </div>
                           </span>
                         )
-                      })()}
-                      <span className="w-px h-3 bg-gray-300"></span>
-                      <span className="text-secondary">经验值：</span>
-                      <span className="text-secondary cursor-pointer hover:text-primary" onClick={() => setShowLevelModal(true)}>500</span>
+                      })()}<span className="w-px h-3 bg-gray-300"></span><span className="text-secondary">经验值：</span><span className="text-secondary cursor-pointer hover:text-primary" onClick={() => setShowLevelModal(true)}>500</span>
                       <div className="w-32 bg-gray-200 rounded-full h-2 cursor-pointer hover:bg-gray-300" onClick={() => setShowLevelModal(true)}>
                         <div className="bg-green-500 h-2 rounded-full" style={{ width: `${(userData.level.experience / userData.level.required) * 100}%` }}></div>
                       </div>
@@ -1605,7 +1572,7 @@ export default function UserProfilePage() {
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-3">等级规则说明</h3>
                 <p className="text-secondary mb-4">
-                  创作等级是对用户在知否平台创作贡献的综合评价体系，共分为10个等级。用户通过创作内容和参与平台活动获得经验值，经验值达到一定数量后即可升级。每升一级，经验值会清零并开始积累下一级所需的经验值。
+                  创作等级采用王者荣耀段位体系，共分为7个等级：青铜、白银、黄金、铂金、钻石、星耀、王者。用户通过创作内容和参与平台活动获得经验值，经验值达到一定数量后即可升级。每升一级，经验值会清零并开始积累下一级所需的经验值。
                 </p>
                 
                 <h4 className="font-medium text-foreground mb-2">经验值获取方式</h4>
@@ -1627,7 +1594,7 @@ export default function UserProfilePage() {
                     <thead>
                       <tr className="bg-gray-50">
                         <th className="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-foreground">等级</th>
-                        <th className="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-foreground">等级名称</th>
+                        <th className="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-foreground">段位名称</th>
                         <th className="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-foreground">所需经验值</th>
                         <th className="border border-gray-200 px-4 py-2 text-left text-sm font-medium text-foreground">等级铭牌</th>
                       </tr>
@@ -1644,10 +1611,7 @@ export default function UserProfilePage() {
                              badge.level === 4 ? '2500-4500' :
                              badge.level === 5 ? '4500-7500' :
                              badge.level === 6 ? '7500-12000' :
-                             badge.level === 7 ? '12000-18000' :
-                             badge.level === 8 ? '18000-28000' :
-                             badge.level === 9 ? '28000-45000' :
-                             '45000+'}
+                             '12000+'}
                           </td>
                           <td className="border border-gray-200 px-4 py-2">
                             <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gradient-to-r ${badge.bgGradient} shadow-md border ${badge.borderColor}`}>

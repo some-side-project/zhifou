@@ -34,10 +34,11 @@ export default function LoginPage() {
       }
 
       const data = await response.json()
-      // 保存token等操作
       console.log('登录成功:', data)
-      // 跳转到首页
-      window.location.href = '/'
+      const username = data.user?.username || data.username || formData.email.split('@')[0]
+      localStorage.setItem('isLoggedIn', 'true')
+      localStorage.setItem('username', username)
+      window.location.href = `/${username}`
     } catch (err) {
       setError(err instanceof Error ? err.message : '登录失败，请稍后重试')
     } finally {

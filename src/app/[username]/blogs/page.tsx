@@ -154,7 +154,7 @@ export default function UserBlogsPage() {
             <div className="space-y-8">
               {blogs.map((blog) => (
                 <div key={blog.id} className="border-b border-border pb-8 last:border-0 last:pb-0">
-                  <Link href={`/${username}/blog/${blog.id}`} className="block">
+                  <div className="cursor-pointer" onClick={() => window.location.href = `/${username}/blog/${blog.id}`}>
                     <h2 className="text-xl font-semibold text-foreground hover:text-primary transition-colors mb-3">
                       {blog.title}
                     </h2>
@@ -168,18 +168,17 @@ export default function UserBlogsPage() {
                       </div>
                       <div className="flex items-center space-x-4">
                         <span>👁️ {blog.views} 浏览</span>
-                        {/* 编辑和删除按钮 - 仅作者可见 */}
                         <div className="flex items-center space-x-2">
-                          <Link href={`/${username}/blogs/edit/${blog.id}`} className="text-primary hover:underline text-xs">
+                          <Link href={`/${username}/blogs/edit/${blog.id}`} className="text-primary hover:underline text-xs" onClick={(e) => e.stopPropagation()}>
                             编辑
                           </Link>
-                          <button className="text-red-500 hover:underline text-xs">
+                          <button className="text-red-500 hover:underline text-xs" onClick={(e) => e.stopPropagation()}>
                             删除
                           </button>
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </div>
               ))}
             </div>

@@ -2,65 +2,39 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useAuth } from '@/lib/auth-context'
 
 export default function Header() {
     const pathname = usePathname()
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [username, setUsername] = useState('')
+    const { isLoggedIn, username, login } = useAuth()
 
-    // 初始化时清除localStorage，确保每次刷新页面都是未登录状态
-    useEffect(() => {
-        localStorage.removeItem('isLoggedIn')
-        localStorage.removeItem('username')
-        setIsLoggedIn(false)
-        setUsername('')
-    }, [])
+    const isBloggerPage = pathname === '/demo' || pathname.startsWith('/demo/')
 
+    const isActive = (path: string) => {
+      if (path === '/') {
+        const explorationPaths = ['/blogs', '/tutorials', '/files', '/services', '/bloggers'];
+        const isExplorationPath = explorationPaths.some(p => pathname === p || pathname.startsWith(p + '/'));
+        return pathname === '/' || isExplorationPath;
+      }
+      return pathname.startsWith(path)
+    }
 
-
-    // 检查当前路径是否匹配导航项
-   const isActive = (path: string) => {
-     if (path === '/') {
-       // 定义探索页面路径
-       const explorationPaths = ['/blogs', '/tutorials', '/files', '/services', '/bloggers'];
-       // 检查是否是探索页面
-       const isExplorationPath = explorationPaths.some(p => pathname === p || pathname.startsWith(p + '/'));
-       // 只在首页或真正的探索页面时，首页链接为活跃状态
-       return pathname === '/' || isExplorationPath;
-     }
-     return pathname.startsWith(path)
-   }
-
-   // 检查是否需要隐藏导航菜单项的场景
-   const shouldHideNavigation = () => {
-     // 博主个人主页：/[username]
-     // 博主个人的内容详情页：/[username]/blog/[id], /[username]/tutorial/[id], /[username]/service/[id] 等
-     // 内容包详情页：/[username]/files/[id]
-     // 内容包的具体内容详情页：更深层次的路径
-     
-     // 定义已知的探索页面路径
-     const explorationPaths = ['/blogs', '/tutorials', '/files', '/services', '/bloggers', '/following', '/recommended'];
-     
-     // 检查当前路径是否是探索页面
-     const isExplorationPath = explorationPaths.some(path => pathname === path || pathname.startsWith(path + '/'));
-     
-     // 检查当前路径是否是博主个人页面或其子页面
-     const isUserPage = /^\/[^/]+(\/.*)?$/.test(pathname);
-     
-     // 只在非探索页面且是用户页面时隐藏导航
-     return isUserPage && !isExplorationPath;
-   }
+    const shouldHideNavigation = () => {
+      const explorationPaths = ['/blogs', '/tutorials', '/files', '/services', '/bloggers', '/following', '/recommended'];
+      const isExplorationPath = explorationPaths.some(path => pathname === path || pathname.startsWith(path + '/'));
+      const isUserPage = /^\/[^/]+(\/.*)?$/.test(pathname);
+      return isUserPage && !isExplorationPath;
+    }
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border">
       <div className="container mx-auto px-4 py-4 grid grid-cols-3 items-center">
-        <div className="flex flex-col">
-          <Link href="/" className="text-2xl font-bold text-primary">
+        <Link href="/" className="flex flex-col hover:opacity-80 transition-opacity">
+          <span className="text-2xl font-bold text-primary">
             知否
-          </Link>
+          </span>
           <span className="text-xs text-secondary">zhifouzhifou.cn</span>
-        </div>
+        </Link>
         
         <div className="flex justify-center">
           {!shouldHideNavigation() && (
@@ -91,14 +65,10 @@ export default function Header() {
           {!isLoggedIn ? (
             <button 
               onClick={() => {
-                // 模拟登录，设置默认用户名
-                setIsLoggedIn(true)
-                setUsername('demo')
-                // 存储到localStorage用于组件间同步
-                localStorage.setItem('isLoggedIn', 'true')
-                localStorage.setItem('username', 'demo')
-                // 触发storage事件，通知其他组件
-                window.dispatchEvent(new Event('storage'))
+                login('demo')
+                if (!isBloggerPage) {
+                  window.location.href = '/demo'
+                }
               }} 
               className="btn-primary"
             >
