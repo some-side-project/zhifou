@@ -1,88 +1,92 @@
-const fs = require('fs');
+ const fs = require('fs');
 const path = require('path');
-const qiniu = require('qiniu');
 
 const accessKey = process.env.QINIU_ACCESS_KEY;
 const secretKey = process.env.QINIU_SECRET_KEY;
 const bucket = process.env.QINIU_BUCKET;
-const prefix = '';
 
 if (!accessKey || !secretKey || !bucket) {
   console.error('请配置七牛云环境变量: QINIU_ACCESS_KEY, QINIU_SECRET_KEY, QINIU_BUCKET');
   process.exit(1);
 }
 
-const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
-const config = new qiniu.config.Config({
-  zone: qiniu.zone.Zone_z0,
-});
+const qiniu = require('qiniu');
 
-const bucketManager = new qiniu.bucket.BucketManager(mac, config);
+const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+const config = new qiniu.conf.Config();
+config.zone = qiniu.zone.Zone_z2;
+
+const formUploader = new qiniu.form_up.FormUploader(config);
+const putExtra = new qiniu.form_up.PutExtra();
 
 const distDir = path.join(__dirname, '..', '.next', 'static');
 
-function uploadDir(dir, prefix) {
+function getAllFiles(dir, basePath = '') {
+  const files = [];
   if (!fs.existsSync(dir)) {
-    console.log(`目录不存在: ${dir}`);
-    return;
+    return files;
   }
-
-  const files = fs.readdirSync(dir);
-  let uploadedCount = 0;
-  let totalFiles = 0;
-
-  function countFiles(dir, prefix) {
-    const items = fs.readdirSync(dir);
-    items.forEach(item => {
-      const filePath = path.join(dir, item);
-      const stat = fs.statSync(filePath);
-      if (stat.isDirectory()) {
-        countFiles(filePath, prefix ? `${prefix}/${item}` : item);
-      } else {
-        totalFiles++;
-      }
-    });
-  }
-
-  countFiles(dir, prefix);
-
-  function uploadFile(filePath, key, callback) {
-    bucketManager.uploadFile(filePath, key, { bucket }, (err, body, info) => {
-      if (err) {
-        console.error(`上传失败: ${key}`, err);
-      } else if (info.statusCode === 200) {
-        uploadedCount++;
-        console.log(`上传成功: ${key} (${uploadedCount}/${totalFiles})`);
-      } else {
-        console.error(`上传失败: ${key}`, body);
-      }
-      callback();
-    });
-  }
-
-  function processFiles(files, index) {
-    if (index >= files.length) {
-      console.log(`\n上传完成！共 ${uploadedCount}/${totalFiles} 个文件`);
-      return;
-    }
-
-    const file = files[index];
-    const filePath = path.join(dir, file);
+  
+  const items = fs.readdirSync(dir);
+  items.forEach(item => {
+    const filePath = path.join(dir, item);
     const stat = fs.statSync(filePath);
-
     if (stat.isDirectory()) {
-      processFiles(fs.readdirSync(filePath).map(f => path.join(file, f)), 0);
-      processFiles(files, index + 1);
+      files.push(...getAllFiles(filePath, basePath ? `${basePath}/${item}` : item));
     } else {
-      const key = prefix ? `${prefix}/${file}` : file;
-      uploadFile(filePath, key, () => {
-        processFiles(files, index + 1);
-      });
+      const key = basePath ? `${basePath}/${item}` : item;
+      files.push({ localPath: filePath, key });
     }
-  }
-
-  console.log('开始上传静态资源到七牛云...\n');
-  processFiles(files, 0);
+  });
+  return files;
 }
 
-uploadDir(distDir, prefix);
+function uploadFile(filePath, key) {
+  return new Promise((resolve, reject) => {
+    const putPolicy = new qiniu.rs.PutPolicy({ scope: bucket });
+    const uploadToken = putPolicy.uploadToken(mac);
+    
+    formUploader.putFile(uploadToken, key, filePath, putExtra, (err, body, info) => {
+      if (err) {
+        reject(err);
+      } else if (info.statusCode === 200) {
+        resolve(body);
+      } else {
+        reject(new Error(JSON.stringify(body)));
+      }
+    });
+  });
+}
+
+async function main() {
+  console.log('开始上传静态资源到七牛云...\n');
+  
+  const files = getAllFiles(distDir);
+  console.log(`共 ${files.length} 个文件待上传\n`);
+  
+  let successCount = 0;
+  let failCount = 0;
+  
+  for (let i = 0; i < files.length; i++) {
+    const { localPath, key } = files[i];
+    try {
+      await uploadFile(localPath, key);
+      successCount++;
+      console.log(`[${i + 1}/${files.length}] 上传成功: ${key}`);
+    } catch (err) {
+      failCount++;
+      console.error(`[${i + 1}/${files.length}] 上传失败: ${key}`, err.message);
+    }
+  }
+  
+  console.log(`\n上传完成！成功: ${successCount}, 失败: ${failCount}`);
+  
+  if (failCount > 0) {
+    process.exit(1);
+  }
+}
+
+main().catch(err => {
+  console.error('上传出错:', err);
+  process.exit(1);
+});
