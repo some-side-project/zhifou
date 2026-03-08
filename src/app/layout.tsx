@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import React from "react";
-import Script from "next/script";
 import { Providers } from "./providers";
 import "../styles/globals.css";
 
@@ -30,17 +29,12 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <head>
-        <Script id="baidu-analytics">
-          {`
-            var _hmt = _hmt || [];
-            (function() {
-              var hm = document.createElement("script");
-              hm.src = "https://hm.baidu.com/hm.js?912b75d4543bfb1e5f33baa520411ae5";
-              var s = document.getElementsByTagName("script")[0]; 
-              s.parentNode.insertBefore(hm, s);
-            })();
-          `}
-        </Script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?912b75d4543bfb1e5f33baa520411ae5"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })();',
+          }}
+        />
       </head>
       <body className={inter.className}>
         <Providers>{children}</Providers>
