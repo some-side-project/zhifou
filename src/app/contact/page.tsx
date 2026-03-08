@@ -45,6 +45,28 @@ export default function ContactPage() {
               </div>
             </div>
             
+            {/* 企业微信客服 */}
+            <div className="bg-white rounded-lg shadow-md p-8 border border-border">
+              <h2 className="text-2xl font-semibold text-foreground mb-6">企业微信客服</h2>
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-80 h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+                  {/* 企业微信客服二维码 */}
+                  <img 
+                    src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=WeChat%20QR%20code%20for%20customer%20service%20with%20Chinese%20text%20%22微信扫码咨询客服%22%20at%20top%20and%20%22企业微信·微信客服%22%20at%20bottom%20with%20green%20curve%20background%2C%20high%20quality%2C%20clean%20design&image_size=portrait_4_3" 
+                    alt="企业微信客服佳航二维码" 
+                    className="w-full h-full object-contain p-4"
+                  />
+                </div>
+                <p className="text-center text-secondary">
+                  扫描上方二维码添加企业微信客服佳航，如有问题可随时咨询了解。
+                </p>
+                <div className="text-center text-sm text-secondary">
+                  <p>客服名称：佳航</p>
+                  <p>服务时间：周一至周五 9:00-18:00</p>
+                </div>
+              </div>
+            </div>
+            
             {/* 联系方式 */}
             <div className="bg-white rounded-lg shadow-md p-8 border border-border">
               <h2 className="text-2xl font-semibold text-foreground mb-6">联系方式</h2>

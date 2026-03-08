@@ -4,6 +4,16 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useState, useEffect } from 'react'
 
+interface Order {
+  id: string
+  name: string
+  amount: string
+  time: string
+  status: string
+  buyer?: string
+  seller?: string
+}
+
 export default function SettingsPage() {
   const [username, setUsername] = useState('')
   
@@ -60,6 +70,50 @@ export default function SettingsPage() {
   const [isWithdrawing, setIsWithdrawing] = useState(false)
   const [withdrawSuccess, setWithdrawSuccess] = useState(false)
   const [showWorkbenchModal, setShowWorkbenchModal] = useState(false)
+  const [showSoldDetailModal, setShowSoldDetailModal] = useState(false)
+  const [showBoughtDetailModal, setShowBoughtDetailModal] = useState(false)
+  const [selectedSoldOrder, setSelectedSoldOrder] = useState<Order | null>(null)
+  const [selectedBoughtOrder, setSelectedBoughtOrder] = useState<Order | null>(null)
+
+  const mockSoldOrders = [
+    {
+      id: 'ORD20260221001',
+      name: 'React 18新特性详解',
+      amount: '¥128.00',
+      time: '2026-02-21 10:30:00',
+      status: '已完成',
+      buyer: '李四'
+    },
+    {
+      id: 'ORD20260220002',
+      name: 'TypeScript高级类型实践',
+      amount: '¥99.00',
+      time: '2026-02-20 14:20:00',
+      status: '已完成',
+      buyer: '王五'
+    }
+  ]
+
+  const mockBoughtOrders = [
+    {
+      id: 'ORD20260219003',
+      name: 'Tailwind CSS最佳实践',
+      amount: '¥68.00',
+      time: '2026-02-19 09:15:00',
+      status: '已完成',
+      seller: '赵六'
+    }
+  ]
+
+  const handleShowSoldDetail = (order: Order) => {
+    setSelectedSoldOrder(order)
+    setShowSoldDetailModal(true)
+  }
+
+  const handleShowBoughtDetail = (order: Order) => {
+    setSelectedBoughtOrder(order)
+    setShowBoughtDetailModal(true)
+  }
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -209,12 +263,6 @@ export default function SettingsPage() {
                     >
                       钱包管理
                     </button>
-                  </div>
-                </div>
-                
-                <div className="p-4 border-b border-border">
-                  <h3 className="text-sm font-semibold text-secondary uppercase tracking-wider mb-3">交易管理</h3>
-                  <div className="space-y-1">
                     <button
                       onClick={() => setActiveTab('sold')}
                       className={`w-full text-left px-4 py-2 rounded-md transition-colors ${activeTab === 'sold' ? 'bg-primary/10 text-primary' : 'text-secondary hover:bg-gray-50 hover:text-primary'}`}
@@ -589,7 +637,17 @@ export default function SettingsPage() {
                     </div>
                     <div className="bg-green-50 rounded-lg p-6 border border-green-200">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-medium text-green-700">待提现</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm font-medium text-green-700">可提现</h3>
+                          <div className="relative group">
+                            <svg className="w-4 h-4 text-green-500 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div className="absolute left-0 bottom-full mb-2 w-64 p-2 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                              可提现余额是指交易成功大于7天的收益
+                            </div>
+                          </div>
+                        </div>
                         <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -754,7 +812,7 @@ export default function SettingsPage() {
               {activeTab === 'sold' && (
                 <div>
                   <h2 className="text-xl font-bold text-foreground mb-6">我卖出的</h2>
-                  <div className="bg-white rounded-lg shadow-sm border border-border p-6 mb-6">
+                  <div className="bg-white rounded-lg shadow-sm border border-border p-6">
                     <div className="overflow-x-auto">
                       <table className="w-full border-collapse">
                         <thead>
@@ -768,63 +826,22 @@ export default function SettingsPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="border-b border-border hover:bg-gray-50">
-                            <td className="py-3 px-4 text-foreground">ORD20260221001</td>
-                            <td className="py-3 px-4 text-foreground">React 18新特性详解</td>
-                            <td className="py-3 px-4 text-primary font-medium">¥128.00</td>
-                            <td className="py-3 px-4 text-secondary">2026-02-21 10:30:00</td>
-                            <td className="py-3 px-4">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">已完成</span>
-                            </td>
-                            <td className="py-3 px-4">
-                              <button className="text-primary hover:underline">详情</button>
-                            </td>
-                          </tr>
-                          <tr className="border-b border-border hover:bg-gray-50">
-                            <td className="py-3 px-4 text-foreground">ORD20260220002</td>
-                            <td className="py-3 px-4 text-foreground">TypeScript高级类型实践</td>
-                            <td className="py-3 px-4 text-primary font-medium">¥99.00</td>
-                            <td className="py-3 px-4 text-secondary">2026-02-20 14:20:00</td>
-                            <td className="py-3 px-4">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">已完成</span>
-                            </td>
-                            <td className="py-3 px-4">
-                              <button className="text-primary hover:underline">详情</button>
-                            </td>
-                          </tr>
+                          {mockSoldOrders.map((order) => (
+                            <tr key={order.id} className="border-b border-border hover:bg-gray-50">
+                              <td className="py-3 px-4 text-foreground">{order.id}</td>
+                              <td className="py-3 px-4 text-foreground">{order.name}</td>
+                              <td className="py-3 px-4 text-primary font-medium">{order.amount}</td>
+                              <td className="py-3 px-4 text-secondary">{order.time}</td>
+                              <td className="py-3 px-4">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{order.status}</span>
+                              </td>
+                              <td className="py-3 px-4">
+                                <button className="text-primary hover:underline" onClick={() => handleShowSoldDetail(order)}>详情</button>
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                  <div className="bg-white rounded-lg shadow-sm border border-border p-6">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">订单详情</h3>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-secondary">订单编号</p>
-                          <p className="font-medium text-foreground">ORD20260221001</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-secondary">商品名称</p>
-                          <p className="font-medium text-foreground">React 18新特性详解</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-secondary">金额</p>
-                          <p className="font-medium text-foreground">¥128.00</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-secondary">购买时间</p>
-                          <p className="font-medium text-foreground">2026-02-21 10:30:00</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-secondary">状态</p>
-                          <p className="font-medium text-foreground">已完成</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-secondary">购买用户</p>
-                          <p className="font-medium text-foreground">李四</p>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -847,18 +864,20 @@ export default function SettingsPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="border-b border-border hover:bg-gray-50">
-                            <td className="py-3 px-4 text-foreground">ORD20260219003</td>
-                            <td className="py-3 px-4 text-foreground">Tailwind CSS最佳实践</td>
-                            <td className="py-3 px-4 text-primary font-medium">¥68.00</td>
-                            <td className="py-3 px-4 text-secondary">2026-02-19 09:15:00</td>
-                            <td className="py-3 px-4">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">已完成</span>
-                            </td>
-                            <td className="py-3 px-4">
-                              <button className="text-primary hover:underline">详情</button>
-                            </td>
-                          </tr>
+                          {mockBoughtOrders.map((order) => (
+                            <tr key={order.id} className="border-b border-border hover:bg-gray-50">
+                              <td className="py-3 px-4 text-foreground">{order.id}</td>
+                              <td className="py-3 px-4 text-foreground">{order.name}</td>
+                              <td className="py-3 px-4 text-primary font-medium">{order.amount}</td>
+                              <td className="py-3 px-4 text-secondary">{order.time}</td>
+                              <td className="py-3 px-4">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{order.status}</span>
+                              </td>
+                              <td className="py-3 px-4">
+                                <button className="text-primary hover:underline" onClick={() => handleShowBoughtDetail(order)}>详情</button>
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -928,6 +947,102 @@ export default function SettingsPage() {
               ) : (
                 <button onClick={() => setShowWithdrawModal(false)} className="btn-primary">关闭</button>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSoldDetailModal && selectedSoldOrder && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
+            <div className="p-6 border-b border-border flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-foreground">订单详情</h3>
+              <button onClick={() => setShowSoldDetailModal(false)} className="text-secondary hover:text-foreground">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-secondary">订单编号</p>
+                    <p className="font-medium text-foreground">{selectedSoldOrder.id}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">商品名称</p>
+                    <p className="font-medium text-foreground">{selectedSoldOrder.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">金额</p>
+                    <p className="font-medium text-foreground">{selectedSoldOrder.amount}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">购买时间</p>
+                    <p className="font-medium text-foreground">{selectedSoldOrder.time}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">状态</p>
+                    <p className="font-medium text-foreground">{selectedSoldOrder.status}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">购买用户</p>
+                    <p className="font-medium text-foreground">{selectedSoldOrder.buyer}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="p-6 border-t border-border flex justify-end">
+              <button onClick={() => setShowSoldDetailModal(false)} className="btn-primary">关闭</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showBoughtDetailModal && selectedBoughtOrder && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
+            <div className="p-6 border-b border-border flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-foreground">订单详情</h3>
+              <button onClick={() => setShowBoughtDetailModal(false)} className="text-secondary hover:text-foreground">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-secondary">订单编号</p>
+                    <p className="font-medium text-foreground">{selectedBoughtOrder.id}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">商品名称</p>
+                    <p className="font-medium text-foreground">{selectedBoughtOrder.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">金额</p>
+                    <p className="font-medium text-foreground">{selectedBoughtOrder.amount}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">购买时间</p>
+                    <p className="font-medium text-foreground">{selectedBoughtOrder.time}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">状态</p>
+                    <p className="font-medium text-foreground">{selectedBoughtOrder.status}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary">卖家</p>
+                    <p className="font-medium text-foreground">{selectedBoughtOrder.seller}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="p-6 border-t border-border flex justify-end">
+              <button onClick={() => setShowBoughtDetailModal(false)} className="btn-primary">关闭</button>
             </div>
           </div>
         </div>

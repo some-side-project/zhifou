@@ -23,6 +23,8 @@ export interface File {
   size: string
   downloads: number
   excerpt: string
+  date?: string
+  type?: string
 }
 
 export interface Service {
