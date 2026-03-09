@@ -1036,7 +1036,7 @@ export default function RichTextEditor({
       {!isFullscreen && (
         <>
           {/* 工具栏 */}
-          <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-gray-100 rounded-t-lg p-3 flex flex-wrap items-center gap-2 shadow-sm">
+          <div className="bg-white border border-border rounded-t-lg p-3 flex flex-wrap items-center gap-2 shadow-sm">
             {/* 移动端菜单按钮 */}
             <div className="md:hidden">
               <button
@@ -1071,10 +1071,10 @@ export default function RichTextEditor({
             </div>
             {/* 工具栏选项 - 桌面端始终显示，移动端仅在菜单打开时显示 */}
             <div
-              className={`flex flex-wrap items-center gap-2 ${
-                mobileMenuOpen ? "block" : "hidden"
-              } md:flex`}
-            >
+                className={`flex flex-wrap items-center gap-2 p-2 bg-white rounded-lg shadow-sm ${
+                  mobileMenuOpen ? "block" : "hidden"
+                } md:flex md:bg-transparent md:shadow-none md:p-0`}
+              >
               {/* 模式切换 */}
               <div className="flex border border-border rounded-md overflow-hidden">
                 <button
@@ -1127,7 +1127,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("bold")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="加粗"
                 >
                   <strong>B</strong>
@@ -1135,7 +1135,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("italic")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="斜体"
                 >
                   <em>I</em>
@@ -1143,7 +1143,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("underline")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="下划线"
                 >
                   <u>U</u>
@@ -1151,7 +1151,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("strikethrough")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="删除线"
                 >
                   <span style={{ textDecoration: "line-through" }}>S</span>
@@ -1160,7 +1160,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("h1")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="一级标题"
                 >
                   H1
@@ -1168,7 +1168,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("h2")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="二级标题"
                 >
                   H2
@@ -1176,7 +1176,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("h3")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="三级标题"
                 >
                   H3
@@ -1185,7 +1185,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("ul")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="无序列表"
                 >
                   •
@@ -1193,7 +1193,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("ol")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="有序列表"
                 >
                   1.
@@ -1201,7 +1201,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("link")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="插入链接"
                 >
                   🔗
@@ -1209,7 +1209,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("code")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="代码块"
                 >
                   {}
@@ -1217,7 +1217,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("table")}
-                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="插入表格"
                 >
                   📊
@@ -1233,7 +1233,7 @@ export default function RichTextEditor({
                   type="button"
                   onClick={undo}
                   disabled={historyIndex <= 0}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="撤销"
                 >
                   <svg
@@ -1249,13 +1249,12 @@ export default function RichTextEditor({
                       d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
                     />
                   </svg>
-                  撤销
                 </button>
                 <button
                   type="button"
                   onClick={redo}
                   disabled={historyIndex >= history.length - 1}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="重做"
                 >
                   <svg
@@ -1271,12 +1270,11 @@ export default function RichTextEditor({
                       d="M21 10h-6a8 8 0 00-8 8v2M21 10l-6-6m6 6l-6 6"
                     />
                   </svg>
-                  重做
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowHistory(!showHistory)}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                   title="版本历史"
                 >
                   <svg
@@ -1292,7 +1290,6 @@ export default function RichTextEditor({
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  历史
                 </button>
               </div>
 
@@ -1301,8 +1298,8 @@ export default function RichTextEditor({
 
               {/* 媒体上传 */}
               <div className="flex items-center gap-2">
-                <label className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm cursor-pointer hover:bg-muted transition-colors">
-                  📷 图片
+                <label className="flex items-center justify-center w-9 h-9 rounded-md text-sm cursor-pointer hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                  📷
                   <input
                     type="file"
                     accept="image/*"
@@ -1311,8 +1308,8 @@ export default function RichTextEditor({
                     disabled={uploading}
                   />
                 </label>
-                <label className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm cursor-pointer hover:bg-muted transition-colors">
-                  🎵 音频
+                <label className="flex items-center justify-center w-9 h-9 rounded-md text-sm cursor-pointer hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                  🎵
                   <input
                     type="file"
                     accept="audio/*"
@@ -1321,8 +1318,8 @@ export default function RichTextEditor({
                     disabled={uploading}
                   />
                 </label>
-                <label className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm cursor-pointer hover:bg-muted transition-colors">
-                  📹 视频
+                <label className="flex items-center justify-center w-9 h-9 rounded-md text-sm cursor-pointer hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                  📹
                   <input
                     type="file"
                     accept="video/*"
@@ -1331,8 +1328,8 @@ export default function RichTextEditor({
                     disabled={uploading}
                   />
                 </label>
-                <label className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm cursor-pointer hover:bg-muted transition-colors">
-                  📎 附件
+                <label className="flex items-center justify-center w-9 h-9 rounded-md text-sm cursor-pointer hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                  📎
                   <input
                     type="file"
                     className="hidden"
@@ -1349,10 +1346,10 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={() => setSpellCheckEnabled(!spellCheckEnabled)}
-                className={`flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm transition-colors ${
+                className={`flex items-center justify-center w-9 h-9 rounded-md text-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 ${
                   spellCheckEnabled
                     ? "bg-primary text-white"
-                    : "text-foreground hover:bg-muted"
+                    : "text-foreground hover:bg-white"
                 }`}
                 title="拼写检查"
               >
@@ -1369,7 +1366,6 @@ export default function RichTextEditor({
                     d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
                   />
                 </svg>
-                拼写检查
               </button>
 
               {/* 分隔线 */}
@@ -1379,10 +1375,10 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={() => setShowOutline(!showOutline)}
-                className={`flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm transition-colors ${
+                className={`flex items-center justify-center w-9 h-9 rounded-md text-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 ${
                   showOutline
                     ? "bg-primary text-white"
-                    : "text-foreground hover:bg-muted"
+                    : "text-foreground hover:bg-white"
                 }`}
                 title="内容大纲"
               >
@@ -1399,7 +1395,6 @@ export default function RichTextEditor({
                     d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
                   />
                 </svg>
-                大纲
               </button>
 
               {/* 分隔线 */}
@@ -1409,10 +1404,10 @@ export default function RichTextEditor({
               <button
                 type="button"
                 onClick={toggleFullscreen}
-                className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                 title={isFullscreen ? "退出全屏" : "全屏"}
               >
-                📱 全屏
+                📱
               </button>
 
             </div>
@@ -1463,10 +1458,10 @@ export default function RichTextEditor({
           </div>
 
           {/* 编辑区域 */}
-          <div className="border-x border-b border-gray-100 rounded-b-lg min-h-[300px] md:min-h-[500px] flex bg-white shadow-sm">
+          <div className="border-x border-b border-gray-100 rounded-b-lg min-h-[300px] sm:min-h-[400px] md:min-h-[500px] flex bg-white shadow-sm">
             {/* 大纲侧边栏 */}
             {showOutline && (
-              <div className="w-64 border-r border-gray-100 bg-gray-50 p-4 overflow-auto">
+              <div className="w-48 sm:w-56 md:w-64 border-r border-gray-100 bg-gray-50 p-4 overflow-auto">
                 <h3 className="text-sm font-semibold mb-3 text-gray-700">内容大纲</h3>
                 {outlineItems.length > 0 ? (
                   <ul className="space-y-1">
@@ -1484,7 +1479,7 @@ export default function RichTextEditor({
                               if (headings[index]) {
                                 headings[index].scrollIntoView({ behavior: 'smooth' });
                                 // 聚焦到标题
-                                headings[index].focus();
+                                (headings[index] as HTMLElement).focus();
                               }
                             }
                           }}
@@ -1514,12 +1509,13 @@ export default function RichTextEditor({
                     onClick={(e) => {
                       const target = e.target as HTMLElement;
                       if (target.tagName === "IMG") {
-                        setSelectedImage(target as HTMLImageElement);
-                        setImageAlt(target.alt || "");
-                        setImageWidth(target.style.width || "100%");
+                        const imgTarget = target as HTMLImageElement;
+                        setSelectedImage(imgTarget);
+                        setImageAlt(imgTarget.alt || "");
+                        setImageWidth(imgTarget.style.width || "100%");
                         // 检测当前对齐方式
-                        const marginLeft = target.style.marginLeft;
-                        const marginRight = target.style.marginRight;
+                        const marginLeft = imgTarget.style.marginLeft;
+                        const marginRight = imgTarget.style.marginRight;
                         if (marginLeft === "0" && marginRight === "auto") {
                           setImageAlignment("left");
                         } else if (
@@ -1586,6 +1582,9 @@ export default function RichTextEditor({
                             lineHeight: "1.8",
                             color: "#333333",
                             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                            backgroundColor: "#f9fafb",
+                            padding: "1rem",
+                            borderRadius: "8px",
                           }}
                         />
                       </div>
@@ -1724,12 +1723,13 @@ export default function RichTextEditor({
                   onClick={(e) => {
                     const target = e.target as HTMLElement;
                     if (target.tagName === "IMG") {
-                      setSelectedImage(target as HTMLImageElement);
-                      setImageAlt(target.alt || "");
-                      setImageWidth(target.style.width || "100%");
+                      const imgTarget = target as HTMLImageElement;
+                      setSelectedImage(imgTarget);
+                      setImageAlt(imgTarget.alt || "");
+                      setImageWidth(imgTarget.style.width || "100%");
                       // 检测当前对齐方式
-                      const marginLeft = target.style.marginLeft;
-                      const marginRight = target.style.marginRight;
+                      const marginLeft = imgTarget.style.marginLeft;
+                      const marginRight = imgTarget.style.marginRight;
                       if (marginLeft === "0" && marginRight === "auto") {
                         setImageAlignment("left");
                       } else if (
@@ -1784,6 +1784,9 @@ export default function RichTextEditor({
                         lineHeight: "1.8",
                         color: "#333333",
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                        backgroundColor: "#f9fafb",
+                        padding: "1.5rem",
+                        borderRadius: "8px",
                       }}
                     />
                   </div>
