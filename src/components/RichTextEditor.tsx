@@ -1036,7 +1036,7 @@ export default function RichTextEditor({
       {!isFullscreen && (
         <>
           {/* 工具栏 */}
-          <div className="bg-white border border-border rounded-t-lg p-3 flex flex-wrap items-center gap-2">
+          <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-gray-100 rounded-t-lg p-3 flex flex-wrap items-center gap-2 shadow-sm">
             {/* 移动端菜单按钮 */}
             <div className="md:hidden">
               <button
@@ -1127,7 +1127,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("bold")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="加粗"
                 >
                   <strong>B</strong>
@@ -1135,7 +1135,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("italic")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="斜体"
                 >
                   <em>I</em>
@@ -1143,7 +1143,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("underline")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="下划线"
                 >
                   <u>U</u>
@@ -1151,7 +1151,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("strikethrough")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="删除线"
                 >
                   <span style={{ textDecoration: "line-through" }}>S</span>
@@ -1160,7 +1160,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("h1")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="一级标题"
                 >
                   H1
@@ -1168,7 +1168,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("h2")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="二级标题"
                 >
                   H2
@@ -1176,7 +1176,7 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("h3")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="三级标题"
                 >
                   H3
@@ -1185,42 +1185,42 @@ export default function RichTextEditor({
                 <button
                   type="button"
                   onClick={() => handleFormat("ul")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="无序列表"
                 >
-                  • 列表
+                  •
                 </button>
                 <button
                   type="button"
                   onClick={() => handleFormat("ol")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="有序列表"
                 >
-                  1. 列表
+                  1.
                 </button>
                 <button
                   type="button"
                   onClick={() => handleFormat("link")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="插入链接"
                 >
-                  🔗 链接
+                  🔗
                 </button>
                 <button
                   type="button"
                   onClick={() => handleFormat("code")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="代码块"
                 >
-                  {} 代码
+                  {}
                 </button>
                 <button
                   type="button"
                   onClick={() => handleFormat("table")}
-                  className="flex items-center gap-1 px-3 py-1.5 border border-border rounded-md text-sm hover:bg-muted transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-md text-sm hover:bg-white transition-colors shadow-sm"
                   title="插入表格"
                 >
-                  📊 表格
+                  📊
                 </button>
               </div>
 
@@ -1463,11 +1463,11 @@ export default function RichTextEditor({
           </div>
 
           {/* 编辑区域 */}
-          <div className="border-x border-b border-border rounded-b-lg min-h-[300px] md:min-h-[400px] flex">
+          <div className="border-x border-b border-gray-100 rounded-b-lg min-h-[300px] md:min-h-[500px] flex bg-white shadow-sm">
             {/* 大纲侧边栏 */}
             {showOutline && (
-              <div className="w-64 border-r border-border bg-muted/30 p-4 overflow-auto">
-                <h3 className="text-sm font-semibold mb-3 text-foreground">内容大纲</h3>
+              <div className="w-64 border-r border-gray-100 bg-gray-50 p-4 overflow-auto">
+                <h3 className="text-sm font-semibold mb-3 text-gray-700">内容大纲</h3>
                 {outlineItems.length > 0 ? (
                   <ul className="space-y-1">
                     {outlineItems.map((item, index) => (
@@ -1536,14 +1536,17 @@ export default function RichTextEditor({
                       }
                     }}
                     data-placeholder={placeholder}
-                    className="w-full h-full p-4 focus:outline-none"
+                    className="w-full h-full p-6 focus:outline-none"
                     style={{
                       outline: "none",
                       whiteSpace: "pre-wrap",
                       wordWrap: "break-word",
                       minHeight: "300px",
                       fontSize: "16px",
-                      lineHeight: "1.6",
+                      lineHeight: "1.8",
+                      color: "#333333",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                      backgroundColor: "#ffffff",
                     }}
                   />
                 </div>
@@ -1568,16 +1571,22 @@ export default function RichTextEditor({
                       onDragOver={handleDragOver}
                       onDrop={handleDrop}
                       placeholder="在此输入Markdown内容..."
-                      className="w-full h-full p-4 border-none focus:outline-none font-mono text-sm"
-                      style={{ resize: "none", fontSize: "14px" }}
+                      className="w-full h-full p-6 border-none focus:outline-none font-mono"
+                      style={{ resize: "none", fontSize: "15px", lineHeight: "1.6", color: "#333333" }}
                     />
                   </div>
                   {showPreview && (
-                    <div className="w-full md:w-1/2 p-4 overflow-auto">
-                      <div className="prose max-w-none">
+                    <div className="w-full md:w-1/2 p-6 overflow-auto bg-gray-50">
+                      <div className="prose max-w-none prose-slate">
                         <div 
                           className="preview-content" 
                           dangerouslySetInnerHTML={renderMarkdown(markdownInput)}
+                          style={{
+                            fontSize: "16px",
+                            lineHeight: "1.8",
+                            color: "#333333",
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                          }}
                         />
                       </div>
                     </div>
@@ -1738,13 +1747,16 @@ export default function RichTextEditor({
                   }}
                   data-placeholder={placeholder}
                   className="w-full h-full p-8 focus:outline-none"
-                  style={{
-                    outline: "none",
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
-                    fontSize: "18px",
-                    lineHeight: "1.8",
-                  }}
+                    style={{
+                      outline: "none",
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      fontSize: "18px",
+                      lineHeight: "1.8",
+                      color: "#333333",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                      backgroundColor: "#ffffff",
+                    }}
                 />
               </div>
             )}
@@ -1758,15 +1770,21 @@ export default function RichTextEditor({
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                     placeholder="在此输入Markdown内容..."
-                    className="w-full h-full p-8 border-none focus:outline-none font-mono text-lg"
-                    style={{ resize: "none" }}
+                    className="w-full h-full p-8 border-none focus:outline-none font-mono"
+                    style={{ resize: "none", fontSize: "16px", lineHeight: "1.6", color: "#333333" }}
                   />
                 </div>
-                <div className="w-1/2 p-8 overflow-auto">
-                  <div className="prose max-w-none">
+                <div className="w-1/2 p-8 overflow-auto bg-gray-50">
+                  <div className="prose max-w-none prose-slate">
                     <div 
                       className="preview-content" 
                       dangerouslySetInnerHTML={renderMarkdown(markdownInput)}
+                      style={{
+                        fontSize: "16px",
+                        lineHeight: "1.8",
+                        color: "#333333",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                      }}
                     />
                   </div>
                 </div>
