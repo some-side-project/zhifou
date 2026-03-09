@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import Link from "next/link";
 
 // HTML转Markdown辅助函数
 const htmlToMarkdown = (html: string): string => {
@@ -1590,4 +1589,264 @@ export default function RichTextEditor({
 
           {/* 图片编辑器 */}
           {showImageEditor && selectedImage && (
-            <div className="fixed inset-0 bg-black/50 flex
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-lg p-6 max-w-md w-full">
+                <h3 className="text-lg font-semibold mb-4">图片编辑器</h3>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2">图片描述</label>
+                  <input
+                    type="text"
+                    value={imageAlt}
+                    onChange={(e) => setImageAlt(e.target.value)}
+                    className="w-full px-3 py-2 border border-border rounded-md"
+                    placeholder="输入图片描述..."
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2">图片宽度</label>
+                  <input
+                    type="text"
+                    value={imageWidth}
+                    onChange={(e) => setImageWidth(e.target.value)}
+                    className="w-full px-3 py-2 border border-border rounded-md"
+                    placeholder="例如: 100% 或 500px"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2">对齐方式</label>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setImageAlignment("left")}
+                      className={`flex-1 py-2 border rounded-md ${imageAlignment === "left" ? "bg-primary text-white" : "border-border hover:bg-muted"}`}
+                    >
+                      左对齐
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImageAlignment("center")}
+                      className={`flex-1 py-2 border rounded-md ${imageAlignment === "center" ? "bg-primary text-white" : "border-border hover:bg-muted"}`}
+                    >
+                      居中
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImageAlignment("right")}
+                      className={`flex-1 py-2 border rounded-md ${imageAlignment === "right" ? "bg-primary text-white" : "border-border hover:bg-muted"}`}
+                    >
+                      右对齐
+                    </button>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (selectedImage) {
+                        // 应用图片编辑
+                        selectedImage.alt = imageAlt;
+                        selectedImage.style.width = imageWidth;
+                        
+                        // 设置对齐方式
+                        if (imageAlignment === "left") {
+                          selectedImage.style.marginLeft = "0";
+                          selectedImage.style.marginRight = "auto";
+                        } else if (imageAlignment === "center") {
+                          selectedImage.style.marginLeft = "auto";
+                          selectedImage.style.marginRight = "auto";
+                        } else if (imageAlignment === "right") {
+                          selectedImage.style.marginLeft = "auto";
+                          selectedImage.style.marginRight = "0";
+                        }
+                        
+                        // 更新内容
+                        handleTraditionalEditorChange();
+                      }
+                      setShowImageEditor(false);
+                      setSelectedImage(null);
+                    }}
+                    className="flex-1 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+                  >
+                    应用
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowImageEditor(false);
+                      setSelectedImage(null);
+                    }}
+                    className="flex-1 py-2 border border-border rounded-md hover:bg-muted transition-colors"
+                  >
+                    取消
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+      
+      {/* 全屏模式 */}
+      {isFullscreen && (
+        <div className="h-full flex flex-col">
+          {/* 全屏工具栏 */}
+          <div className="bg-white border-b border-border p-3 flex justify-between items-center">
+            <h2 className="text-lg font-semibold">全屏编辑</h2>
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className="px-4 py-2 border border-border rounded-md hover:bg-muted transition-colors"
+            >
+              退出全屏
+            </button>
+          </div>
+          
+          {/* 全屏编辑区域 */}
+          <div className="flex-1 overflow-auto">
+            {mode === "traditional" && (
+              <div className="h-full">
+                <div
+                  ref={editorRef}
+                  contentEditable
+                  suppressContentEditableWarning={true}
+                  onInput={handleTraditionalEditorChange}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (target.tagName === "IMG") {
+                      setSelectedImage(target as HTMLImageElement);
+                      setImageAlt(target.alt || "");
+                      setImageWidth(target.style.width || "100%");
+                      // 检测当前对齐方式
+                      const marginLeft = target.style.marginLeft;
+                      const marginRight = target.style.marginRight;
+                      if (marginLeft === "0" && marginRight === "auto") {
+                        setImageAlignment("left");
+                      } else if (
+                        marginLeft === "auto" &&
+                        marginRight === "auto"
+                      ) {
+                        setImageAlignment("center");
+                      } else if (marginLeft === "auto" && marginRight === "0") {
+                        setImageAlignment("right");
+                      } else {
+                        setImageAlignment("center");
+                      }
+                      setShowImageEditor(true);
+                    }
+                  }}
+                  data-placeholder={placeholder}
+                  className="w-full h-full p-8 focus:outline-none"
+                  style={{
+                    outline: "none",
+                    whiteSpace: "pre-wrap",
+                    wordWrap: "break-word",
+                    fontSize: "18px",
+                    lineHeight: "1.8",
+                  }}
+                />
+              </div>
+            )}
+            
+            {mode === "markdown" && (
+              <div className="h-full flex">
+                <div className="w-1/2 border-r border-border">
+                  <textarea
+                    value={markdownInput}
+                    onChange={handleMarkdownChange}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    placeholder="在此输入Markdown内容..."
+                    className="w-full h-full p-8 border-none focus:outline-none font-mono text-lg"
+                    style={{ resize: "none" }}
+                  />
+                </div>
+                <div className="w-1/2 p-8 overflow-auto">
+                  <div className="prose max-w-none">
+                    <div 
+                      className="preview-content" 
+                      dangerouslySetInnerHTML={renderMarkdown(markdownInput)}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      
+      {/* 版本历史面板 */}
+      {showHistory && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center">
+          <div className="bg-white rounded-t-lg w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+            <div className="p-4 border-b border-border flex justify-between items-center">
+              <h3 className="text-lg font-semibold">版本历史</h3>
+              <button
+                type="button"
+                onClick={() => setShowHistory(false)}
+                className="p-2 hover:bg-muted rounded-full"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-auto p-4">
+              {history.length > 0 ? (
+                <ul className="space-y-3">
+                  {history.map((item, index) => (
+                    <li
+                      key={index}
+                      className={`p-3 border rounded-md cursor-pointer ${
+                        index === historyIndex ? "bg-primary/10 border-primary" : "border-border"
+                      }`}
+                      onClick={() => {
+                        const content = item.content;
+                        setHistoryIndex(index);
+                        
+                        if (mode === "traditional" && editorRef.current) {
+                          editorRef.current.innerHTML = content;
+                          if (onChange) {
+                            onChange(content);
+                          }
+                        } else if (mode === "markdown") {
+                          setMarkdownInput(content);
+                          if (onChange) {
+                            onChange(content);
+                          }
+                        }
+                      }}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium">版本 {history.length - index}</span>
+                        <span className="text-xs text-gray-500">
+                          {item.timestamp.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="mt-2 text-sm text-gray-600 line-clamp-2">
+                        {item.content.replace(/<[^>]+>/g, "").substring(0, 100)}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-center text-gray-500 py-8">暂无历史记录</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
