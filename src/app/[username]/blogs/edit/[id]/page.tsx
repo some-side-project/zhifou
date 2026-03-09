@@ -139,6 +139,7 @@ export default function EditBlogPage() {
                   value={content}
                   onChange={setContent}
                   placeholder="开始编写博客内容..."
+                  blogId={blogId}
                 />
               </div>
               

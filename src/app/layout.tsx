@@ -8,8 +8,24 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "建造你的数字资产空间",
-  description: "每个人的个人数字资产沉淀和变现平台",
-  keywords: ["博客", "教程", "文件", "服务", "AI助理"],
+  description:
+    "每个人的个人数字资产沉淀和变现平台，提供AI智能博客、AI博客、知否博客、长内容创作、博客系统、CMS管理、AI智能体和AI个人助理等功能",
+  keywords: [
+    "博客",
+    "教程",
+    "文件",
+    "服务",
+    "AI助理",
+    "AI智能博客",
+    "AI博客",
+    "知否博客",
+    "长内容",
+    "博客系统",
+    "CMS",
+    "个人数字资产",
+    "AI智能体",
+    "AI个人助理",
+  ],
   authors: [{ name: "知否团队" }],
   viewport: "width=device-width, initial-scale=1",
   icons: [
